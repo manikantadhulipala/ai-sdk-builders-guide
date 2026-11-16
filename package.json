@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "lesson:01": "tsx lessons/01-intro-llms/intro.ts",
-    "lesson:02": "tsx lessons/02-prompting/prompting.ts"
+    "lesson:02": "tsx lessons/02-prompting/prompting.ts",
+    "lesson:03": "tsx lessons/03-dev-setup/env-check.ts"
   },
   "dependencies": {
     "ai": "^7.0.173",
