@@ -11,4 +11,5 @@ My notes and code for the Vercel Builders Guide to the AI SDK.
 
 ## Lessons
 
-- [x] 01: Introduction to LLMs (`lessons/01-intro-llms/`)
+- [ ] 01: Introduction to LLMs (`lessons/01-intro-llms/`)
+- [ ] 02: Prompting Fundamentals (`lessons/02-prompting/`)
