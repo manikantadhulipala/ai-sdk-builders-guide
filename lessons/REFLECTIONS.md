@@ -7,7 +7,7 @@ bracketed parts with your experience before you save or share them.
 
 **Prompt:** After exploring the OpenAI tokenizer tool, what surprised you most about how text gets split into tokens? How will this impact your prompt design and handling of large documents?
 
-**Draft:** [Describe what you saw in the tokenizer, e.g. a long word or number splitting into several tokens.] This matters for cost and for the context window, because limits are counted in tokens, not words. For large documents I would chunk or summarise the text before sending it, and keep prompts short and specific.
+**Draft:** [Describe what you saw in the tokenizer.] Measured with the `o200k_base` tokenizer (`pnpm lesson:04:tokens` uses the same library): a common word like `the` is 1 token, `Kubernetes` is 2, `extraordinarily` is 3, the number `12345` is 2, the date `2026-11-20` is 6, and an emoji `🚀` is 2. The surprise for me is [your reaction, e.g. how much a date costs compared with a word]. This matters for cost and the context window, because limits are counted in tokens, not words. For large documents I would chunk or summarise the text before sending it, and keep prompts short and specific.
 
 ## Lesson 2: Prompting Fundamentals
 
