@@ -19,3 +19,4 @@ My notes and code for the Vercel Builders Guide to the AI SDK.
 - [ ] 06: Introduction to invisible AI (`lessons/06-invisible-ai/`)
 - [ ] 07: Text classification (`lessons/07-classification/`)
 - [ ] 08: Automatic summarization (`lessons/08-summarization/`)
+- [ ] 09: Structured data extraction (`lessons/09-structured-extraction/`)

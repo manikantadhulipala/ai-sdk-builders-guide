@@ -20,3 +20,9 @@ patch -p1 < summarization-page.patch
 ```
 
 The patch is checked against the course's original file. It adds the `generateSummary` call, the `summary` state, the loading label, and renders `<SummaryCard />` when a summary exists.
+
+## Lesson 9: structured extraction
+
+- `app/(4-extraction)/extraction/schemas.ts`: the appointment schema with `.describe()` guidance and today's date.
+- `app/(4-extraction)/extraction/actions.ts`: the server action that calls `generateText` with `Output.object()`.
+- `extraction-page.patch`: wires the form and the calendar card into the course's `page.tsx`. Copy it into the starter project's root, then run `patch -p1 < extraction-page.patch`.
