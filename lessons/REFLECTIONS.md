@@ -47,3 +47,9 @@ bracketed parts with your experience before you save or share them.
 
 **Draft:** [Describe your chatbot and its purpose.] Its system prompt would be: "[Your 2-3 sentences: who the assistant is, its tone, and what it must not do.]"
 
+
+## Conclusion: Final Reflection
+
+**Prompt:** What's the first AI feature you'll ship this week? How will you measure success?
+
+**Draft:** [Describe the smallest viable feature and the first metric you'll track.]
