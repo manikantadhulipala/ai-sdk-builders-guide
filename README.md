@@ -18,3 +18,4 @@ My notes and code for the Vercel Builders Guide to the AI SDK.
 - [ ] 05: Model types and performance (`lessons/05-model-types/`)
 - [ ] 06: Introduction to invisible AI (`lessons/06-invisible-ai/`)
 - [ ] 07: Text classification (`lessons/07-classification/`)
+- [ ] 08: Automatic summarization (`lessons/08-summarization/`)
