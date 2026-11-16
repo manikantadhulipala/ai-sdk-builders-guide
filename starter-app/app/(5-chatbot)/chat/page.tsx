@@ -2,6 +2,7 @@
 
 import { useChat } from "@ai-sdk/react";
 import { useState } from "react";
+import Weather, { type WeatherData } from "./weather";
 
 import {
   Conversation,
@@ -51,6 +52,14 @@ export default function Chat() {
                             </MessageResponse>
                           );
                         case "tool-getWeather":
+                          if (part.state === "output-available" && part.output) {
+                            return (
+                              <Weather
+                                key={part.toolCallId || `${message.id}-${i}`}
+                                weatherData={part.output as WeatherData}
+                              />
+                            );
+                          }
                           return (
                             <Tool key={part.toolCallId || `${message.id}-${i}`}>
                               <ToolHeader type={part.type} state={part.state} />
