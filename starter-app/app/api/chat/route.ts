@@ -9,6 +9,13 @@ import { getMemoryStore, saveMemoryStore } from "@/lib/memory";
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
+// System prompt: the assistant's persistent persona and constraints for every reply.
+// (In AI SDK v7 this property is called `instructions`; it was `system` before.)
+const PERSONA = `You are a support assistant for TechCorp's cloud platform.
+Focus on helping users troubleshoot deployment issues, API usage, and account settings.
+Be concise but thorough. Link to documentation at docs.techcorp.com when relevant.
+If a question is outside your knowledge area, politely redirect to contact@techcorp.com.`;
+
 type IncomingMessage = { role: string; parts?: { type: string; text?: string }[] };
 
 function textOf(message: IncomingMessage | undefined): string {
@@ -26,12 +33,12 @@ export async function POST(req: Request) {
     const userText = textOf([...messages].reverse().find((m) => m.role === "user"));
 
     // Memory is optional: if retrieval fails (for example, no embedding access), chat still works.
-    let system: string | undefined;
+    let memoryContext: string | undefined;
     try {
       if (userText) {
         const found = await store.retrieveMemories(persona, userText, 3);
         if (found.length > 0) {
-          system = "Relevant earlier context from this user:\n" + found.map((m) => `- ${m.message}`).join("\n");
+          memoryContext = "Relevant earlier context from this user:\n" + found.map((m) => `- ${m.message}`).join("\n");
         }
       }
     } catch (error) {
@@ -40,7 +47,7 @@ export async function POST(req: Request) {
 
     const result = streamText({
       model: "openai/gpt-5-mini", // Fast model for real-time chat (immediate streaming, low latency)
-      system,
+      instructions: [PERSONA, memoryContext].filter(Boolean).join("\n\n"),
       messages: await convertToModelMessages(messages as never),
       onFinish: async () => {
         // Save the user's message only after the reply succeeds.
