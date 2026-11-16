@@ -16,11 +16,13 @@
     "lesson:02:exercises": "tsx lessons/02-prompting/exercises.ts",
     "lesson:04:streaming": "tsx lessons/04-data-extraction/streaming-extraction.ts",
     "lesson:06:compare": "tsx lessons/06-invisible-ai/compare.ts",
-    "lesson:06:demo": "tsx lessons/06-invisible-ai/demo.ts"
+    "lesson:06:demo": "tsx lessons/06-invisible-ai/demo.ts",
+    "lesson:04:tokens": "tsx lessons/04-data-extraction/count-tokens.ts"
   },
   "dependencies": {
     "ai": "^7.0.173",
     "dotenv": "^18.0.10",
+    "tiktoken": "^1.0.22",
     "zod": "^4.6.7"
   },
   "devDependencies": {

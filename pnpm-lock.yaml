@@ -14,6 +14,9 @@ importers:
       dotenv:
         specifier: ^18.0.10
         version: 18.0.10
+      tiktoken:
+        specifier: ^1.0.22
+        version: 1.0.22
       zod:
         specifier: ^4.6.7
         version: 4.6.7
@@ -363,6 +366,9 @@ packages:
   json-schema@0.4.0:
     resolution: {integrity: sha512-es94M3nTIfsEPisRafak+HDLfHXnKBhV3vU5eqPcS3flIWqcxJWgXHXiey3YrpaNsanY5ei1VoYEbOzijuq9BA==}
 
+  tiktoken@1.0.22:
+    resolution: {integrity: sha512-PKvy1rVF1RibfF3JlXBSP0Jrcw2uq3yXdgcEXtKTYn3QJ/cBRBHDnrJ5jHky+MENZ6DIPwNUGWpkVx+7joCpNA==}
+
   tsx@4.23.15:
     resolution: {integrity: sha512-Yiex1Ovn8z2xPpOWckIiysV1SSyRMY9BkLF++q0yKiDxCqRhosKfMg3janKkiLBwZ5c/YryloKwGZcrEmtwxKw==}
     engines: {node: '>=18.0.0'}
@@ -592,6 +598,8 @@ snapshots:
     optional: true
 
   json-schema@0.4.0: {}
+
+  tiktoken@1.0.22: {}
 
   tsx@4.23.15:
     dependencies:
