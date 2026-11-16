@@ -6,3 +6,5 @@ node_modules/
 .vercel
 .checkpoint.json
 .checkpoint.json.tmp
+.summary-cache.json
+.summary-cache.json.tmp

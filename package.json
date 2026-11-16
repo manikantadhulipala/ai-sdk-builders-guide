@@ -19,7 +19,10 @@
     "lesson:06:demo": "tsx lessons/06-invisible-ai/demo.ts",
     "lesson:04:tokens": "tsx lessons/04-data-extraction/count-tokens.ts",
     "lesson:07": "tsx lessons/07-classification/classification.ts",
-    "lesson:07:multilabel": "tsx lessons/07-classification/multi-label.ts"
+    "lesson:07:multilabel": "tsx lessons/07-classification/multi-label.ts",
+    "lesson:08": "tsx lessons/08-summarization/summarize.ts",
+    "lesson:08:mapreduce": "tsx lessons/08-summarization/map-reduce.ts",
+    "lesson:08:incremental": "tsx lessons/08-summarization/incremental.ts"
   },
   "dependencies": {
     "ai": "^7.0.173",
