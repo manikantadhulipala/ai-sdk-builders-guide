@@ -3,6 +3,7 @@ import {
   convertToModelMessages,
   createUIMessageStreamResponse,
   toUIMessageStream,
+  isStepCount,
 } from "ai";
 import { getMemoryStore, saveMemoryStore } from "@/lib/memory";
 import { getWeather } from "./tools";
@@ -15,7 +16,8 @@ export const maxDuration = 30;
 const PERSONA = `You are a support assistant for TechCorp's cloud platform.
 Focus on helping users troubleshoot deployment issues, API usage, and account settings.
 Be concise but thorough. Link to documentation at docs.techcorp.com when relevant.
-If a question is outside your knowledge area, politely redirect to contact@techcorp.com.`;
+If a question is outside your knowledge area, politely redirect to contact@techcorp.com.
+When using tools, only mention capabilities you actually have. The weather tool provides current temperature, conditions, and humidity only - no forecasts.`;
 
 type IncomingMessage = { role: string; parts?: { type: string; text?: string }[] };
 
@@ -51,6 +53,7 @@ export async function POST(req: Request) {
       instructions: [PERSONA, memoryContext].filter(Boolean).join("\n\n"),
       messages: await convertToModelMessages(messages as never),
       tools: { getWeather },
+      stopWhen: isStepCount(5), // Allow up to 5 steps: tool calls, then a written answer
       onFinish: async () => {
         // Save the user's message only after the reply succeeds.
         if (!userText) return;
