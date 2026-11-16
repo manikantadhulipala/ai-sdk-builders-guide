@@ -14,3 +14,4 @@ My notes and code for the Vercel Builders Guide to the AI SDK.
 - [ ] 01: Introduction to LLMs (`lessons/01-intro-llms/`)
 - [ ] 02: Prompting Fundamentals (`lessons/02-prompting/`)
 - [x] 03: Dev setup and environment check (`lessons/03-dev-setup/`)
+- [ ] 04: Data extraction (`lessons/04-data-extraction/`)
