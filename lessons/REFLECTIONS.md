@@ -34,3 +34,16 @@ bracketed parts with your experience before you save or share them.
 **Draft:** [Name one or two apps you use.] For example, [app] does [feature] without asking me, which cuts out a manual step. I could build something similar with `generateText` and `Output.object()`, for example by turning free-text input into a typed form.
 
 **Optional-vs-nullable note (from the lesson's challenge):** use `.nullable()` when a field should always be present in the output but can be `null`, as with `suggestedResponse` in `lessons/06-invisible-ai/demo.ts`. Use `.optional()` when the key itself may be absent. With `Output.object()`, `.nullable()` gives the model a consistent shape to fill in, which is usually easier to validate.
+
+## Lesson 12: AI Elements
+
+**Prompt:** Think about the two-step progression we just went through. How did each step improve the user experience? Why is it valuable to see the transformation happen incrementally rather than all at once?
+
+**Draft:** [Your answer.] Step 2 gave you message bubbles, Step 3 added auto-scroll and an empty state, Step 4 improved the input, and Step 5 added markdown. Seeing each change on its own shows which problem each component solves.
+
+## Lesson 13: System Prompts
+
+**Prompt:** Imagine building a chatbot for a specific purpose (for example, company support, a technical documentation assistant, or a personal project). What system prompt would define its core personality, tone, and key constraints? Draft 2-3 sentences for the system prompt.
+
+**Draft:** [Describe your chatbot and its purpose.] Its system prompt would be: "[Your 2-3 sentences: who the assistant is, its tone, and what it must not do.]"
+
