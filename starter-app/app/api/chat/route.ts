@@ -5,6 +5,7 @@ import {
   toUIMessageStream,
 } from "ai";
 import { getMemoryStore, saveMemoryStore } from "@/lib/memory";
+import { getWeather } from "./tools";
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -49,6 +50,7 @@ export async function POST(req: Request) {
       model: "openai/gpt-5-mini", // Fast model for real-time chat (immediate streaming, low latency)
       instructions: [PERSONA, memoryContext].filter(Boolean).join("\n\n"),
       messages: await convertToModelMessages(messages as never),
+      tools: { getWeather },
       onFinish: async () => {
         // Save the user's message only after the reply succeeds.
         if (!userText) return;
