@@ -11,7 +11,8 @@
     "lesson:04": "tsx lessons/04-data-extraction/extraction.ts",
     "lesson:04:summary": "tsx lessons/04-data-extraction/challenge-summary.ts",
     "lesson:04:advanced": "tsx lessons/04-data-extraction/advanced-extraction.ts",
-    "lesson:04:fewshot": "tsx lessons/04-data-extraction/few-shot-extraction.ts"
+    "lesson:04:fewshot": "tsx lessons/04-data-extraction/few-shot-extraction.ts",
+    "lesson:05": "tsx lessons/05-model-types/model-comparison.ts"
   },
   "dependencies": {
     "ai": "^7.0.173",
