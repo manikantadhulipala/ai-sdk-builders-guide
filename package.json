@@ -1,0 +1,25 @@
+{
+  "name": "ai-sdk-builders-guide",
+  "version": "1.0.0",
+  "private": true,
+  "description": "My practice work for the Vercel Builders Guide to the AI SDK",
+  "type": "module",
+  "scripts": {
+    "lesson:01": "tsx lessons/01-intro-llms/intro.ts"
+  },
+  "dependencies": {
+    "ai": "^7.0.173",
+    "dotenv": "^18.0.10",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}
