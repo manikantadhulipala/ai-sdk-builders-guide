@@ -17,3 +17,4 @@ My notes and code for the Vercel Builders Guide to the AI SDK.
 - [ ] 04: Data extraction (`lessons/04-data-extraction/`)
 - [ ] 05: Model types and performance (`lessons/05-model-types/`)
 - [ ] 06: Introduction to invisible AI (`lessons/06-invisible-ai/`)
+- [ ] 07: Text classification (`lessons/07-classification/`)

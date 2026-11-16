@@ -17,7 +17,9 @@
     "lesson:04:streaming": "tsx lessons/04-data-extraction/streaming-extraction.ts",
     "lesson:06:compare": "tsx lessons/06-invisible-ai/compare.ts",
     "lesson:06:demo": "tsx lessons/06-invisible-ai/demo.ts",
-    "lesson:04:tokens": "tsx lessons/04-data-extraction/count-tokens.ts"
+    "lesson:04:tokens": "tsx lessons/04-data-extraction/count-tokens.ts",
+    "lesson:07": "tsx lessons/07-classification/classification.ts",
+    "lesson:07:multilabel": "tsx lessons/07-classification/multi-label.ts"
   },
   "dependencies": {
     "ai": "^7.0.173",
