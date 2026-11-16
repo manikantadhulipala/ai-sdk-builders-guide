@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI SDK Builders Guide: Practice</title>
+  <style>
+    :root { --fg: #171717; --muted: #5c5c5c; --bg: #ffffff; --line: #e5e5e5; --ok: #15803d; --todo: #a16207; }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) { --fg: #ededed; --muted: #a3a3a3; --bg: #0a0a0a; --line: #262626; --ok: #4ade80; --todo: #facc15; }
+    }
+    :root[data-theme="dark"] { --fg: #ededed; --muted: #a3a3a3; --bg: #0a0a0a; --line: #262626; --ok: #4ade80; --todo: #facc15; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 system-ui, -apple-system, sans-serif; }
+    main { max-width: 720px; margin: 0 auto; padding: 48px 16px; }
+    h1 { font-size: 28px; margin: 0 0 8px; }
+    p { color: var(--muted); margin: 0 0 24px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; font-size: 14px; }
+    code { font-size: 14px; }
+    .ok { color: var(--ok); font-weight: 600; }
+    .todo { color: var(--todo); font-weight: 600; }
+    a { color: inherit; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>AI SDK Builders Guide: Practice</h1>
+    <p>My lesson scripts for the Vercel AI SDK course. Run them locally with <code>pnpm lesson:01</code>, and so on. Real model output needs billing on the gateway account, so most lessons are verified only up to that step.</p>
+
+    <table>
+      <thead>
+        <tr><th>Lesson</th><th>Folder</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>03 Dev setup</td><td><code>lessons/03-dev-setup</code></td><td class="ok">Environment check passes</td></tr>
+        <tr><td>01 Intro to LLMs</td><td><code>lessons/01-intro-llms</code></td><td class="todo">Waiting on a real model run</td></tr>
+        <tr><td>02 Prompting</td><td><code>lessons/02-prompting</code></td><td class="todo">Waiting on a real model run</td></tr>
+        <tr><td>04 Data extraction</td><td><code>lessons/04-data-extraction</code></td><td class="todo">Waiting on a real model run</td></tr>
+        <tr><td>05 Model types</td><td><code>lessons/05-model-types</code></td><td class="todo">Waiting on a real model run</td></tr>
+        <tr><td>06 Invisible AI</td><td><code>lessons/06-invisible-ai</code></td><td class="todo">Waiting on a real model run</td></tr>
+        <tr><td>07 Classification</td><td><code>lessons/07-classification</code></td><td class="todo">Waiting on a real model run</td></tr>
+      </tbody>
+    </table>
+
+    <p style="margin-top:24px">Source code: <a href="https://github.com/manikantadhulipala/ai-sdk-builders-guide">github.com/manikantadhulipala/ai-sdk-builders-guide</a></p>
+  </main>
+</body>
+</html>
