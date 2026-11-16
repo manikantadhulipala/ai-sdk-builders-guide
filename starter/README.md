@@ -13,10 +13,10 @@ The per-model latency and cost values are placeholders to replace with measured 
 
 - `app/(3-summarization)/summarization/actions.ts`: the server action with the final schema.
 
-Wire the button and summary card into the course's `page.tsx` by applying the patch from the starter's root:
+Wire the button and summary card into the course's `page.tsx`. Copy `summarization-page.patch` into the starter project's root, then run:
 
 ```bash
-patch -p1 < ../starter/summarization-page.patch
+patch -p1 < summarization-page.patch
 ```
 
 The patch is checked against the course's original file. It adds the `generateSummary` call, the `summary` state, the loading label, and renders `<SummaryCard />` when a summary exists.
