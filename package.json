@@ -5,7 +5,8 @@
   "description": "My practice work for the Vercel Builders Guide to the AI SDK",
   "type": "module",
   "scripts": {
-    "lesson:01": "tsx lessons/01-intro-llms/intro.ts"
+    "lesson:01": "tsx lessons/01-intro-llms/intro.ts",
+    "lesson:02": "tsx lessons/02-prompting/prompting.ts"
   },
   "dependencies": {
     "ai": "^7.0.173",
@@ -16,10 +17,5 @@
     "@types/node": "^26.6.6",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
   }
 }
