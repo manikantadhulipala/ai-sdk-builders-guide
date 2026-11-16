@@ -1,4 +1,6 @@
 import { embed } from "ai";
+import fs from "fs";
+import path from "path";
 
 // Long-term memory for the chatbot: one isolated store per persona, with
 // embeddings for retrieval and an exponential decay so older memories fade.
@@ -79,7 +81,44 @@ export class MemoryStore {
       .sort((a, b) => b.score - a.score)
       .slice(0, limit);
   }
+
+  // Persist to a JSON file so memories survive a server restart.
+  save(file: string) {
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    const data = {
+      stores: Object.fromEntries(this.stores),
+      summaries: Object.fromEntries(this.summaries),
+      configs: Object.fromEntries(this.configs),
+      nextId: this.nextId,
+    };
+    const tmp = `${file}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify(data));
+    fs.renameSync(tmp, file);
+  }
+
+  // Load from a JSON file if it exists. Missing or unreadable files start an empty store.
+  load(file: string) {
+    if (!fs.existsSync(file)) return;
+    const data = JSON.parse(fs.readFileSync(file, "utf-8"));
+    this.stores = new Map(Object.entries(data.stores ?? {}));
+    this.summaries = new Map(Object.entries(data.summaries ?? {}));
+    this.configs = new Map(Object.entries(data.configs ?? {}));
+    this.nextId = data.nextId ?? 1;
+  }
 }
+
+// Local embedder with no model call: hashes each word into a fixed-size vector.
+// Good enough for development and offline tests. Set MEMORY_EMBEDDER=local to use it.
+export const hashEmbedder: Embedder = async (text) => {
+  const dims = 256;
+  const v = new Array<number>(dims).fill(0);
+  for (const word of text.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean)) {
+    let h = 0;
+    for (let i = 0; i < word.length; i++) h = (h * 31 + word.charCodeAt(i)) >>> 0;
+    v[h % dims] += 1;
+  }
+  return v;
+};
 
 export function cosine(a: number[], b: number[]): number {
   let dot = 0;
