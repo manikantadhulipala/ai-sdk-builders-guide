@@ -2,6 +2,7 @@ import { FatalError } from "workflow";
 import { resend, FROM } from "@/lib/resend";
 import { updateStatus } from "@/lib/orders-store";
 import type { Order } from "@/lib/pizza";
+import { log } from "@/lib/log";
 
 export async function sendOrderConfirmation(order: Order): Promise<void> {
   "use step";
@@ -20,9 +21,11 @@ export async function sendOrderConfirmation(order: Order): Promise<void> {
 
   if (resp.error) {
     // Mark the order so the status page shows the failure instead of "placed" forever.
+    log("error", "email.failed", { correlationId: order.id, error: resp.error.message });
     await updateStatus(order.id, "failed");
     throw new FatalError(`Resend failed: ${resp.error.message}`);
   }
 
+  log("info", "email.sent", { correlationId: order.id });
   await updateStatus(order.id, "confirmed");
 }

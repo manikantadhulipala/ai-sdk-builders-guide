@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { resumeHook } from "workflow/api";
 import { getOrderById } from "@/lib/orders-store";
 import type { OrderStatus } from "@/lib/pizza";
+import { log } from "@/lib/log";
 
 // Shared handler for the kitchen and driver buttons. It only resumes the
 // workflow if the order is in the state that button applies to, so a double
@@ -31,16 +32,27 @@ export async function resumeOrderHook(
     return NextResponse.json({ error: "Order not found." }, { status: 404 });
   }
   if (entry.status !== expectedStatus) {
+    log("warn", "hook.rejected", {
+      correlationId: orderId,
+      expected: expectedStatus,
+      actual: entry.status,
+    });
     return NextResponse.json(
       { error: `Order is ${entry.status}, expected ${expectedStatus}.` },
       { status: 409 },
     );
   }
 
+  const startedAt = Date.now();
   try {
     await resumeHook(tokenFor(orderId), { resumedAt: new Date().toISOString() });
+    log("info", "hook.resumed", { correlationId: orderId, step: expectedStatus, durationMs: Date.now() - startedAt });
   } catch (error) {
-    console.error("Could not resume order hook", error);
+    log("error", "hook.resume_failed", {
+      correlationId: orderId,
+      step: expectedStatus,
+      error: error instanceof Error ? error.message : String(error),
+    });
     return NextResponse.json(
       { error: "The workflow is not waiting for this step yet. Try again in a moment." },
       { status: 409 },
