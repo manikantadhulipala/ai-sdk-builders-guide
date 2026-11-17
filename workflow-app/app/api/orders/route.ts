@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
-import { recordOrder } from "@/lib/orders-store";
+import { start } from "workflow/api";
+import { attachRunId, recordOrder, updateStatus } from "@/lib/orders-store";
 import { MENU, type Order, type PizzaName, type Size, type Crust } from "@/lib/pizza";
+import { processOrder } from "@/workflows/process-order";
 
 type IncomingOrder = {
   customerName: string;
@@ -78,10 +80,15 @@ export async function POST(request: Request) {
     placedAt: new Date().toISOString(),
   };
 
-  // TODO (Lesson 1.3): Replace this stub with start(processOrder, [order]).
-  // For now we generate a fake runId so the redirect to /orders/[runId] works.
-  const fakeRunId = crypto.randomUUID();
-  recordOrder(order, fakeRunId);
+  recordOrder(order);
 
-  return NextResponse.json({ runId: fakeRunId });
+  try {
+    const run = await start(processOrder, [order]);
+    attachRunId(order.id, run.runId);
+    return NextResponse.json({ runId: run.runId });
+  } catch (error) {
+    console.error("Could not start processOrder", error);
+    updateStatus(order.id, "failed");
+    return NextResponse.json({ error: "Could not place the order. Please try again." }, { status: 500 });
+  }
 }
