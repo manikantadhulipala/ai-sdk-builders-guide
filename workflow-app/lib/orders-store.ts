@@ -7,7 +7,12 @@ type StoredOrder = {
   updatedAt: string;
 };
 
-const store = new Map<string, StoredOrder>();
+// Kept on globalThis so the API route and the order page share one store.
+// Next bundles each route separately, so a plain module-level Map is not shared.
+const globalForStore = globalThis as typeof globalThis & {
+  __pizzaOrderStore?: Map<string, StoredOrder>;
+};
+const store = (globalForStore.__pizzaOrderStore ??= new Map<string, StoredOrder>());
 
 export function recordOrder(order: Order, runId: string): void {
   store.set(order.id, {
