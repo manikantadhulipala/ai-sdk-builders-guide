@@ -8,3 +8,4 @@ node_modules/
 .checkpoint.json.tmp
 .summary-cache.json
 .summary-cache.json.tmp
+workflow-app/tsconfig.tsbuildinfo
