@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
-import { recordOrder } from "@/lib/orders-store";
-import type { Order, PizzaName, Size, Crust } from "@/lib/pizza";
+import { start } from "workflow/api";
+import { attachRunId, recordOrder, updateStatus } from "@/lib/orders-store";
+import { MENU, type Order, type PizzaName, type Size, type Crust } from "@/lib/pizza";
+import { processOrder } from "@/workflows/process-order";
 
 type IncomingOrder = {
   customerName: string;
@@ -12,8 +14,59 @@ type IncomingOrder = {
   cardLast4: string;
 };
 
+const SIZES: readonly Size[] = ["small", "medium", "large"];
+const CRUSTS: readonly Crust[] = ["thin", "thick"];
+
+function validate(body: unknown): { ok: true; order: IncomingOrder } | { ok: false; error: string } {
+  if (typeof body !== "object" || body === null) {
+    return { ok: false, error: "Request body must be a JSON object." };
+  }
+  const b = body as Record<string, unknown>;
+  const text = (key: keyof IncomingOrder) => (typeof b[key] === "string" ? (b[key] as string).trim() : "");
+
+  const customerName = text("customerName");
+  const email = text("email");
+  const address = text("address");
+  const cardLast4 = text("cardLast4");
+  const pizza = text("pizza");
+  const size = text("size");
+  const crust = text("crust");
+
+  if (!customerName) return { ok: false, error: "customerName is required." };
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, error: "email must be a valid address." };
+  if (!address) return { ok: false, error: "address is required." };
+  if (!/^\d{4}$/.test(cardLast4)) return { ok: false, error: "cardLast4 must be 4 digits." };
+  if (!MENU.some((item) => item.name === pizza)) return { ok: false, error: "pizza is not on the menu." };
+  if (!SIZES.includes(size as Size)) return { ok: false, error: "size must be small, medium or large." };
+  if (!CRUSTS.includes(crust as Crust)) return { ok: false, error: "crust must be thin or thick." };
+
+  return {
+    ok: true,
+    order: {
+      customerName,
+      email,
+      pizza: pizza as PizzaName,
+      size: size as Size,
+      crust: crust as Crust,
+      address,
+      cardLast4,
+    },
+  };
+}
+
 export async function POST(request: Request) {
-  const body = (await request.json()) as IncomingOrder;
+  let json: unknown;
+  try {
+    json = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Request body must be valid JSON." }, { status: 400 });
+  }
+
+  const result = validate(json);
+  if (!result.ok) {
+    return NextResponse.json({ error: result.error }, { status: 400 });
+  }
+  const body = result.order;
 
   const order: Order = {
     id: crypto.randomUUID(),
@@ -27,10 +80,15 @@ export async function POST(request: Request) {
     placedAt: new Date().toISOString(),
   };
 
-  // TODO (Lesson 1.3): Replace this stub with start(processOrder, [order]).
-  // For now we generate a fake runId so the redirect to /orders/[runId] works.
-  const fakeRunId = crypto.randomUUID();
-  recordOrder(order, fakeRunId);
+  recordOrder(order);
 
-  return NextResponse.json({ runId: fakeRunId });
+  try {
+    const run = await start(processOrder, [order]);
+    attachRunId(order.id, run.runId);
+    return NextResponse.json({ runId: run.runId });
+  } catch (error) {
+    console.error("Could not start processOrder", error);
+    updateStatus(order.id, "failed");
+    return NextResponse.json({ error: "Could not place the order. Please try again." }, { status: 500 });
+  }
 }
