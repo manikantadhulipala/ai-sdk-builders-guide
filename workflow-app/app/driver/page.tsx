@@ -3,9 +3,9 @@ import { DriverList } from "./list";
 
 export const dynamic = "force-dynamic";
 
-export default function DriverPage() {
-  const awaitingPickup = listOrdersByStatus("ready-for-pickup");
-  const inFlight = listOrdersByStatus("out-for-delivery");
+export default async function DriverPage() {
+  const awaitingPickup = await listOrdersByStatus("ready-for-pickup");
+  const inFlight = await listOrdersByStatus("out-for-delivery");
 
   return (
     <div>

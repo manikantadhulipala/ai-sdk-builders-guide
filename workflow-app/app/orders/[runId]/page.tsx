@@ -9,7 +9,7 @@ export default async function OrderStatusPage({
   params: Promise<{ runId: string }>;
 }) {
   const { runId } = await params;
-  const entry = getOrderByRunId(runId);
+  const entry = await getOrderByRunId(runId);
 
   if (!entry) {
     notFound();

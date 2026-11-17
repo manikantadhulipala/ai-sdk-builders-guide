@@ -20,9 +20,9 @@ export async function sendOrderConfirmation(order: Order): Promise<void> {
 
   if (resp.error) {
     // Mark the order so the status page shows the failure instead of "placed" forever.
-    updateStatus(order.id, "failed");
+    await updateStatus(order.id, "failed");
     throw new FatalError(`Resend failed: ${resp.error.message}`);
   }
 
-  updateStatus(order.id, "confirmed");
+  await updateStatus(order.id, "confirmed");
 }
