@@ -1,58 +1,87 @@
+import { neon } from "@neondatabase/serverless";
 import type { Order, OrderStatus } from "./pizza";
 
-type StoredOrder = {
+// Orders live in Postgres (Neon, added from the Vercel Marketplace), so every
+// Vercel instance and the workflow runtime see the same data.
+const sql = neon(process.env.DATABASE_URL ?? "");
+
+export type StoredOrder = {
   order: Order;
   runId: string | undefined;
   status: OrderStatus;
   updatedAt: string;
 };
 
-// Kept on globalThis so the API route and the order page share one store.
-// Next bundles each route separately, so a plain module-level Map is not shared.
-const globalForStore = globalThis as typeof globalThis & {
-  __pizzaOrderStore?: Map<string, StoredOrder>;
+type Row = {
+  data: Order;
+  run_id: string | null;
+  status: OrderStatus;
+  updated_at: string;
 };
-const store = (globalForStore.__pizzaOrderStore ??= new Map<string, StoredOrder>());
+
+function toStored(row: Row): StoredOrder {
+  return {
+    order: row.data,
+    runId: row.run_id ?? undefined,
+    status: row.status,
+    updatedAt: new Date(row.updated_at).toISOString(),
+  };
+}
+
+// Create the table on first use, once per process.
+let schemaReady: Promise<void> | undefined;
+function ensureSchema(): Promise<void> {
+  schemaReady ??= (async () => {
+    await sql`
+      CREATE TABLE IF NOT EXISTS orders (
+        id TEXT PRIMARY KEY,
+        run_id TEXT,
+        status TEXT NOT NULL,
+        updated_at TIMESTAMPTZ NOT NULL,
+        data JSONB NOT NULL
+      )
+    `;
+  })();
+  return schemaReady;
+}
 
 // Store the order before its workflow starts, so the confirmation step can
 // update its status even if it finishes first. The run ID is attached after start().
-export function recordOrder(order: Order): void {
-  store.set(order.id, {
-    order,
-    runId: undefined,
-    status: "placed",
-    updatedAt: new Date().toISOString(),
-  });
+export async function recordOrder(order: Order): Promise<void> {
+  await ensureSchema();
+  await sql`
+    INSERT INTO orders (id, run_id, status, updated_at, data)
+    VALUES (${order.id}, NULL, 'placed', now(), ${JSON.stringify(order)}::jsonb)
+  `;
 }
 
-export function attachRunId(orderId: string, runId: string): void {
-  const existing = store.get(orderId);
-  if (!existing) return;
-  store.set(orderId, { ...existing, runId });
+export async function attachRunId(orderId: string, runId: string): Promise<void> {
+  await ensureSchema();
+  await sql`UPDATE orders SET run_id = ${runId}, updated_at = now() WHERE id = ${orderId}`;
 }
 
-export function updateStatus(orderId: string, status: OrderStatus): void {
-  const existing = store.get(orderId);
-  if (!existing) return;
-  store.set(orderId, {
-    ...existing,
-    status,
-    updatedAt: new Date().toISOString(),
-  });
+export async function updateStatus(orderId: string, status: OrderStatus): Promise<void> {
+  await ensureSchema();
+  await sql`UPDATE orders SET status = ${status}, updated_at = now() WHERE id = ${orderId}`;
 }
 
-export function getOrderByRunId(runId: string): StoredOrder | undefined {
-  for (const entry of store.values()) {
-    if (entry.runId === runId) return entry;
-  }
-  return undefined;
+export async function getOrderByRunId(runId: string): Promise<StoredOrder | undefined> {
+  await ensureSchema();
+  const rows = (await sql`
+    SELECT data, run_id, status, updated_at FROM orders WHERE run_id = ${runId} LIMIT 1
+  `) as Row[];
+  return rows[0] ? toStored(rows[0]) : undefined;
 }
 
 // Only orders whose workflow has started, so every listed order has a run ID.
-export function listOrdersByStatus(status: OrderStatus): (StoredOrder & { runId: string })[] {
-  return Array.from(store.values())
-    .filter((entry): entry is StoredOrder & { runId: string } =>
-      entry.status === status && entry.runId !== undefined,
-    )
-    .sort((a, b) => a.updatedAt.localeCompare(b.updatedAt));
+export async function listOrdersByStatus(
+  status: OrderStatus,
+): Promise<(StoredOrder & { runId: string })[]> {
+  await ensureSchema();
+  const rows = (await sql`
+    SELECT data, run_id, status, updated_at FROM orders
+    WHERE status = ${status} AND run_id IS NOT NULL
+    ORDER BY updated_at ASC
+  `) as Row[];
+  return rows.map((row) => ({ ...toStored(row), runId: row.run_id as string }));
 }

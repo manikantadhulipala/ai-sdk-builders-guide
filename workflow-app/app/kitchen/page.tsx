@@ -3,8 +3,8 @@ import { KitchenList } from "./list";
 
 export const dynamic = "force-dynamic";
 
-export default function KitchenPage() {
-  const waiting = listOrdersByStatus("in-the-kitchen");
+export default async function KitchenPage() {
+  const waiting = await listOrdersByStatus("in-the-kitchen");
 
   return (
     <div>

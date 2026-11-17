@@ -80,15 +80,15 @@ export async function POST(request: Request) {
     placedAt: new Date().toISOString(),
   };
 
-  recordOrder(order);
+  await recordOrder(order);
 
   try {
     const run = await start(processOrder, [order]);
-    attachRunId(order.id, run.runId);
+    await attachRunId(order.id, run.runId);
     return NextResponse.json({ runId: run.runId });
   } catch (error) {
     console.error("Could not start processOrder", error);
-    updateStatus(order.id, "failed");
+    await updateStatus(order.id, "failed");
     return NextResponse.json({ error: "Could not place the order. Please try again." }, { status: 500 });
   }
 }
