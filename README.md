@@ -28,3 +28,13 @@ My notes and code for the Vercel Builders Guide to the AI SDK.
 - [ ] 15: Multi-step chat and generative UI (`starter-app/app/(5-chatbot)/chat/weather.tsx`)
 
 Lessons 10 to 15 live in the Next.js starter (`starter-app/`), which is the course's starter project. Lesson 03 is ticked after its environment check passes. The other lessons are ticked after a real model run succeeds, which needs billing on the LookIn team.
+
+## Workflow track: Build Durable Workflows
+
+Code lives in `workflow-app/`, the pizza tracker from the Vercel Academy course "Build Durable Workflows" (`workflow-foundations`). Setup steps are in `workflow-app/README.md`. It needs a Resend key in `workflow-app/.env.local`.
+
+- [x] 1.1: Set up the tracker and wrap `next.config.ts` with `withWorkflow` (`workflow-app/next.config.ts`)
+- [x] 1.2: First durable step, `sendOrderConfirmation` (`workflow-app/workflows/steps/send-order-confirmation.ts`). Not called yet; the order route still has a stub.
+- [ ] 1.3: `processOrder` workflow. Replace the stub `fakeRunId` in `workflow-app/app/api/orders/route.ts` with `start(processOrder, [order])`.
+- [ ] 1.4: Deploy to Vercel
+- [ ] Section 3: Hook resume routes (`/api/kitchen/ready`, `/api/driver/pickup`, `/api/driver/delivered`)
