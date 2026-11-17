@@ -36,5 +36,5 @@ Code lives in `workflow-app/`, the pizza tracker from the Vercel Academy course 
 - [x] 1.1: Set up the tracker and wrap `next.config.ts` with `withWorkflow` (`workflow-app/next.config.ts`)
 - [x] 1.2: First durable step, `sendOrderConfirmation` (`workflow-app/workflows/steps/send-order-confirmation.ts`)
 - [x] 1.3: `processOrder` workflow (`workflow-app/workflows/process-order.ts`), started from `POST /api/orders` with `start(processOrder, [order])`
-- [ ] 1.4: Deploy to Vercel
+- [ ] 1.4: Deploy to Vercel. Blocked until the order store is durable: the in-memory store is per instance, so the status page would 404 again on Vercel. Before deploying, turn on "Enable access to System Environment Variables" in the project settings, and add `RESEND_API_KEY` (and `RESEND_FROM` if you use one).
 - [ ] Section 3: Hook resume routes (`/api/kitchen/ready`, `/api/driver/pickup`, `/api/driver/delivered`)
