@@ -3,6 +3,7 @@ import { start } from "workflow/api";
 import { attachRunId, recordOrder, updateStatus } from "@/lib/orders-store";
 import { MENU, type Order, type PizzaName, type Size, type Crust } from "@/lib/pizza";
 import { processOrder } from "@/workflows/process-order";
+import { log } from "@/lib/log";
 
 type IncomingOrder = {
   customerName: string;
@@ -55,15 +56,20 @@ function validate(body: unknown): { ok: true; order: IncomingOrder } | { ok: fal
 }
 
 export async function POST(request: Request) {
+  const startedAt = Date.now();
+  const requestId = crypto.randomUUID();
+
   let json: unknown;
   try {
     json = await request.json();
   } catch {
+    log("warn", "order.rejected", { correlationId: requestId, reason: "invalid_json" });
     return NextResponse.json({ error: "Request body must be valid JSON." }, { status: 400 });
   }
 
   const result = validate(json);
   if (!result.ok) {
+    log("warn", "order.rejected", { correlationId: requestId, reason: result.error });
     return NextResponse.json({ error: result.error }, { status: 400 });
   }
   const body = result.order;
@@ -81,13 +87,26 @@ export async function POST(request: Request) {
   };
 
   await recordOrder(order);
+  log("info", "order.received", { correlationId: order.id, pizza: order.pizza, size: order.size, crust: order.crust });
 
   try {
     const run = await start(processOrder, [order]);
     await attachRunId(order.id, run.runId);
+    log("info", "order.started", {
+      correlationId: order.id,
+      runId: run.runId,
+      pizza: order.pizza,
+      size: order.size,
+      crust: order.crust,
+      durationMs: Date.now() - startedAt,
+    });
     return NextResponse.json({ runId: run.runId });
   } catch (error) {
-    console.error("Could not start processOrder", error);
+    log("error", "order.start_failed", {
+      correlationId: order.id,
+      error: error instanceof Error ? error.message : String(error),
+      durationMs: Date.now() - startedAt,
+    });
     await updateStatus(order.id, "failed");
     return NextResponse.json({ error: "Could not place the order. Please try again." }, { status: 500 });
   }
