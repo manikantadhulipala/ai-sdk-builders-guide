@@ -73,6 +73,14 @@ export async function getOrderByRunId(runId: string): Promise<StoredOrder | unde
   return rows[0] ? toStored(rows[0]) : undefined;
 }
 
+export async function getOrderById(orderId: string): Promise<StoredOrder | undefined> {
+  await ensureSchema();
+  const rows = (await sql`
+    SELECT data, run_id, status, updated_at FROM orders WHERE id = ${orderId} LIMIT 1
+  `) as Row[];
+  return rows[0] ? toStored(rows[0]) : undefined;
+}
+
 // Only orders whose workflow has started, so every listed order has a run ID.
 export async function listOrdersByStatus(
   status: OrderStatus,
