@@ -36,5 +36,5 @@ Code lives in `workflow-app/`, the pizza tracker from the Vercel Academy course 
 - [x] 1.1: Set up the tracker and wrap `next.config.ts` with `withWorkflow` (`workflow-app/next.config.ts`)
 - [x] 1.2: First durable step, `sendOrderConfirmation` (`workflow-app/workflows/steps/send-order-confirmation.ts`)
 - [x] 1.3: `processOrder` workflow (`workflow-app/workflows/process-order.ts`), started from `POST /api/orders` with `start(processOrder, [order])`
-- [ ] 1.4: Deploy to Vercel. The order store is now Neon Postgres, so orders survive across instances. The Vercel project is `pizza-tracker` (root `workflow-app`), with System Environment Variables enabled, `RESEND_API_KEY` set, and `DATABASE_URL` from the Neon integration. The preview is tested; production still needs the preview promoted.
-- [ ] Section 3: Hook resume routes (`/api/kitchen/ready`, `/api/driver/pickup`, `/api/driver/delivered`)
+- [x] 1.4: Deployed to Vercel as `pizza-tracker` (root `workflow-app`). Production is live; orders are stored in Neon Postgres.
+- [x] Section 3: Kitchen, driver and delivery hooks (`/api/kitchen/ready`, `/api/driver/pickup`, `/api/driver/delivered`)
