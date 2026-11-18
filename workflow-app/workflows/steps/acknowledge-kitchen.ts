@@ -18,4 +18,4 @@ export async function acknowledgeKitchen(order: Order): Promise<void> {
   log("info", "kitchen.acknowledged", { correlationId: order.id });
 }
 
-acknowledgeKitchen.maxRetries = 0; // test value: retries off. Set to 5 next.
+acknowledgeKitchen.maxRetries = 5;
