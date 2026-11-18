@@ -34,7 +34,9 @@ function validate(body: unknown): { ok: true; order: IncomingOrder } | { ok: fal
   const crust = text("crust");
 
   if (!customerName) return { ok: false, error: "customerName is required." };
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, error: "email must be a valid address." };
+  // Only reject empty or spaced values here. Resend decides whether the address is deliverable,
+  // and a rejected address becomes a failed workflow run that the status page shows.
+  if (!email || /\s/.test(email)) return { ok: false, error: "email is required and cannot contain spaces." };
   if (!address) return { ok: false, error: "address is required." };
   if (!/^\d{4}$/.test(cardLast4)) return { ok: false, error: "cardLast4 must be 4 digits." };
   if (!MENU.some((item) => item.name === pizza)) return { ok: false, error: "pizza is not on the menu." };
