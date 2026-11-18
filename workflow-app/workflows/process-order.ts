@@ -1,4 +1,4 @@
-import { createHook } from "workflow";
+import { createHook, sleep } from "workflow";
 import type { Order } from "@/lib/pizza";
 import { hookTokens } from "@/lib/hook-tokens";
 import { sendOrderConfirmation } from "./steps/send-order-confirmation";
@@ -14,6 +14,7 @@ export async function processOrder(order: Order): Promise<void> {
   // can never arrive before the workflow is listening for it.
   const kitchenReady = createHook({ token: hookTokens.kitchenReady(order.id) });
   await acknowledgeKitchen(order);
+  await sleep("30s");
   await kitchenReady;
 
   const driverPickup = createHook({ token: hookTokens.driverPickup(order.id) });
