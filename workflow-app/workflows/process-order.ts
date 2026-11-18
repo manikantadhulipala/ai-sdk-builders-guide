@@ -2,6 +2,7 @@ import { createHook } from "workflow";
 import type { Order } from "@/lib/pizza";
 import { hookTokens } from "@/lib/hook-tokens";
 import { sendOrderConfirmation } from "./steps/send-order-confirmation";
+import { acknowledgeKitchen } from "./steps/acknowledge-kitchen";
 import { setOrderStatus } from "./steps/set-order-status";
 
 export async function processOrder(order: Order): Promise<void> {
@@ -12,7 +13,7 @@ export async function processOrder(order: Order): Promise<void> {
   // Create each hook before the status that shows its button, so a click
   // can never arrive before the workflow is listening for it.
   const kitchenReady = createHook({ token: hookTokens.kitchenReady(order.id) });
-  await setOrderStatus(order.id, "in-the-kitchen");
+  await acknowledgeKitchen(order);
   await kitchenReady;
 
   const driverPickup = createHook({ token: hookTokens.driverPickup(order.id) });
