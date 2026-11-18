@@ -9,8 +9,8 @@ import { confirmDelivery } from "./steps/confirm-delivery";
 import { sendReviewRequest } from "./steps/send-review-request";
 import { sendEscalationEmail } from "./steps/send-escalation-email";
 
-// Test value. Set back to "20m" before merging.
-const KITCHEN_TIMEOUT = "30s";
+// Kitchen timeout for the escalation race.
+const KITCHEN_TIMEOUT = "20m";
 
 export async function processOrder(order: Order): Promise<{
   status: "delivered" | "escalated";
