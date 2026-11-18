@@ -4,6 +4,9 @@ import { hookTokens } from "@/lib/hook-tokens";
 import { sendOrderConfirmation } from "./steps/send-order-confirmation";
 import { acknowledgeKitchen } from "./steps/acknowledge-kitchen";
 import { setOrderStatus } from "./steps/set-order-status";
+import { dispatchDelivery } from "./steps/dispatch-delivery";
+import { confirmDelivery } from "./steps/confirm-delivery";
+import { sendReviewRequest } from "./steps/send-review-request";
 
 export async function processOrder(order: Order): Promise<void> {
   "use workflow";
@@ -22,8 +25,9 @@ export async function processOrder(order: Order): Promise<void> {
   await driverPickup;
 
   const delivered = createHook({ token: hookTokens.delivered(order.id) });
-  await setOrderStatus(order.id, "out-for-delivery");
+  await dispatchDelivery(order);
   await delivered;
 
-  await setOrderStatus(order.id, "delivered");
+  await confirmDelivery(order);
+  await sendReviewRequest(order);
 }
