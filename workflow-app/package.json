@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "dashboard": "WORKFLOW_LOCAL_DATA_DIR=.workflow-data workflow web"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.2.1",
