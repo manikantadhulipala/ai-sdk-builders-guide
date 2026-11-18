@@ -1,6 +1,7 @@
 import { createHook, sleep } from "workflow";
 import type { Order } from "@/lib/pizza";
 import { hookTokens } from "@/lib/hook-tokens";
+import { chargeCard } from "./steps/charge-card";
 import { sendOrderConfirmation } from "./steps/send-order-confirmation";
 import { acknowledgeKitchen } from "./steps/acknowledge-kitchen";
 import { dispatchDelivery } from "./steps/dispatch-delivery";
@@ -18,6 +19,7 @@ export async function processOrder(order: Order): Promise<{
 }> {
   "use workflow";
 
+  await chargeCard(order);
   await sendOrderConfirmation(order);
 
   // Create the hook before the status that shows its button, so a click can
