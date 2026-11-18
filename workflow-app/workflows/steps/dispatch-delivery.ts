@@ -5,6 +5,9 @@ import { log } from "@/lib/log";
 export async function dispatchDelivery(order: Order): Promise<void> {
   "use step";
 
-  await updateStatus(order.id, "out-for-delivery");
-  log("info", "delivery.dispatched", { correlationId: order.id });
+  // Fake latency so the run timeline has something to show.
+  await new Promise((resolve) => setTimeout(resolve, 200));
+
+  await updateStatus(order.id, "ready-for-pickup");
+  log("info", "delivery.ready_for_pickup", { correlationId: order.id });
 }
