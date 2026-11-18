@@ -10,7 +10,7 @@ export async function sendOrderConfirmation(order: Order): Promise<void> {
   const resp = await resend.emails.send({
     from: FROM,
     to: [order.email],
-    subject: `Order confirmed: ${order.size} ${order.pizza}`,
+    subject: `Order confirmed (v2): ${order.size} ${order.pizza}`,
     html: `
       <p>Hi ${order.customerName},</p>
       <p>We got your order for a ${order.size} ${order.pizza} on ${order.crust} crust.</p>
