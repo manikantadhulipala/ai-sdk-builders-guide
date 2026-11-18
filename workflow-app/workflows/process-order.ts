@@ -17,7 +17,7 @@ export async function processOrder(order: Order): Promise<void> {
   // can never arrive before the workflow is listening for it.
   const kitchenReady = createHook({ token: hookTokens.kitchenReady(order.id) });
   await acknowledgeKitchen(order);
-  await sleep("30s");
+  await sleep("30s"); // cook time
   await kitchenReady;
 
   const driverPickup = createHook({ token: hookTokens.driverPickup(order.id) });
@@ -26,6 +26,7 @@ export async function processOrder(order: Order): Promise<void> {
 
   const delivered = createHook({ token: hookTokens.delivered(order.id) });
   await dispatchDelivery(order);
+  await sleep("30s"); // delivery time
   await delivered;
 
   await confirmDelivery(order);
