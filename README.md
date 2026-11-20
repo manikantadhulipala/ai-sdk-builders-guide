@@ -11,15 +11,15 @@ My notes and code for the Vercel Builders Guide to the AI SDK.
 
 ## Lessons
 
-- [ ] 01: Introduction to LLMs (`lessons/01-intro-llms/`)
-- [ ] 02: Prompting Fundamentals (`lessons/02-prompting/`)
+- [x] 01: Introduction to LLMs (`lessons/01-intro-llms/`)
+- [x] 02: Prompting Fundamentals (`lessons/02-prompting/`)
 - [x] 03: Dev setup and environment check (`lessons/03-dev-setup/`)
-- [ ] 04: Data extraction (`lessons/04-data-extraction/`)
-- [ ] 05: Model types and performance (`lessons/05-model-types/`)
-- [ ] 06: Introduction to invisible AI (`lessons/06-invisible-ai/`)
-- [ ] 07: Text classification (`lessons/07-classification/`)
-- [ ] 08: Automatic summarization (`lessons/08-summarization/`)
-- [ ] 09: Structured data extraction (`lessons/09-structured-extraction/`)
+- [x] 04: Data extraction (`lessons/04-data-extraction/`)
+- [x] 05: Model types and performance (`lessons/05-model-types/`)
+- [x] 06: Introduction to invisible AI (`lessons/06-invisible-ai/`)
+- [x] 07: Text classification (`lessons/07-classification/`)
+- [x] 08: Automatic summarization (`lessons/08-summarization/`)
+- [x] 09: Structured data extraction (`lessons/09-structured-extraction/`)
 - [ ] 10: UI with v0 (bonus: `starter-app/components/event-card.tsx`)
 - [ ] 11: Basic chatbot (`starter-app/app/api/chat/route.ts`, `starter-app/app/(5-chatbot)/chat/page.tsx`)
 - [ ] 12: AI Elements (`starter-app/components/ai-elements/`)
