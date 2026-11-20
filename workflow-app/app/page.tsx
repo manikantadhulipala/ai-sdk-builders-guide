@@ -58,12 +58,12 @@ export default function OrderPage() {
           />
         </Field>
 
-        <Field label="Email">
+        <Field label="Email (Resend's test sender only delivers to your Resend login email or delivered@resend.dev)">
           <input
             name="email"
             type="email"
             required
-            placeholder="marge@example.com"
+            placeholder="delivered@resend.dev"
             className={inputCls}
           />
         </Field>

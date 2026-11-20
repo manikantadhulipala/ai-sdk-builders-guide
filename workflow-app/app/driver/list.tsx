@@ -23,6 +23,7 @@ export function DriverList({
 }) {
   const router = useRouter();
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     const id = setInterval(() => router.refresh(), 2000);
@@ -31,11 +32,20 @@ export function DriverList({
 
   async function trigger(orderId: string) {
     setBusyId(orderId);
-    await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ orderId }),
-    });
+    setErrors(({ [orderId]: _, ...rest }) => rest);
+    try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId }),
+      });
+      if (!res.ok) {
+        const data = (await res.json().catch(() => ({}))) as { error?: string };
+        setErrors((e) => ({ ...e, [orderId]: data.error ?? "Something went wrong. Try again." }));
+      }
+    } catch {
+      setErrors((e) => ({ ...e, [orderId]: "Network error. Try again." }));
+    }
     setBusyId(null);
     router.refresh();
   }
@@ -59,6 +69,9 @@ export function DriverList({
                 <p className="text-sm text-stone-500">
                   {order.customerName} · {order.address}
                 </p>
+                {errors[order.id] && (
+                  <p role="alert" className="mt-1 text-sm text-red-700">{errors[order.id]}</p>
+                )}
               </div>
               <button
                 onClick={() => trigger(order.id)}
