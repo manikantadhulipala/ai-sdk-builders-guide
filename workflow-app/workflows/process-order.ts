@@ -9,16 +9,28 @@ import { markOutForDelivery } from "./steps/mark-out-for-delivery";
 import { confirmDelivery } from "./steps/confirm-delivery";
 import { sendReviewRequest } from "./steps/send-review-request";
 import { sendEscalationEmail } from "./steps/send-escalation-email";
+import { setOrderStatus } from "./steps/set-order-status";
 
 // Kitchen timeout for the escalation race.
 const KITCHEN_TIMEOUT = "20m";
 
-export async function processOrder(order: Order): Promise<{
-  status: "delivered" | "escalated";
-  orderId: string;
-}> {
+type OrderResult = { status: "delivered" | "escalated"; orderId: string };
+
+export async function processOrder(order: Order): Promise<OrderResult> {
   "use workflow";
 
+  try {
+    return await fulfillOrder(order);
+  } catch (error) {
+    // A step that runs out of retries fails the run without touching the order,
+    // which would leave the status page stuck on its last status. Mark it failed,
+    // then rethrow so the run still shows as failed in the dashboard.
+    await setOrderStatus(order.id, "failed");
+    throw error;
+  }
+}
+
+async function fulfillOrder(order: Order): Promise<OrderResult> {
   await chargeCard(order);
   await sendOrderConfirmation(order);
 
