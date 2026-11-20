@@ -20,7 +20,7 @@ My notes and code for the Vercel Builders Guide to the AI SDK.
 - [x] 07: Text classification (`lessons/07-classification/`)
 - [x] 08: Automatic summarization (`lessons/08-summarization/`)
 - [x] 09: Structured data extraction (`lessons/09-structured-extraction/`)
-- [x] 10: UI with v0 (bonus: `starter-app/components/event-card.tsx`)
+- [x] 10: UI with v0 (`starter-app/components/SummaryCard.tsx`, used on `/summarization`; bonus: `starter-app/components/event-card.tsx`)
 - [x] 11: Basic chatbot (`starter-app/app/api/chat/route.ts`, `starter-app/app/(5-chatbot)/chat/page.tsx`)
 - [x] 12: AI Elements (`starter-app/components/ai-elements/`)
 - [x] 13: System prompts (`starter-app/app/api/chat/route.ts`, `instructions`)
