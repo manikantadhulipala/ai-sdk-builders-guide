@@ -9,3 +9,4 @@ node_modules/
 .summary-cache.json
 .summary-cache.json.tmp
 workflow-app/tsconfig.tsbuildinfo
+.env*

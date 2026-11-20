@@ -21,10 +21,10 @@ My notes and code for the Vercel Builders Guide to the AI SDK.
 - [x] 08: Automatic summarization (`lessons/08-summarization/`)
 - [x] 09: Structured data extraction (`lessons/09-structured-extraction/`)
 - [ ] 10: UI with v0 (bonus: `starter-app/components/event-card.tsx`)
-- [ ] 11: Basic chatbot (`starter-app/app/api/chat/route.ts`, `starter-app/app/(5-chatbot)/chat/page.tsx`)
+- [x] 11: Basic chatbot (`starter-app/app/api/chat/route.ts`, `starter-app/app/(5-chatbot)/chat/page.tsx`)
 - [ ] 12: AI Elements (`starter-app/components/ai-elements/`)
-- [ ] 13: System prompts (`starter-app/app/api/chat/route.ts`, `instructions`)
-- [ ] 14: Tool use (`starter-app/app/api/chat/tools.ts`)
+- [x] 13: System prompts (`starter-app/app/api/chat/route.ts`, `instructions`)
+- [x] 14: Tool use (`starter-app/app/api/chat/tools.ts`)
 - [ ] 15: Multi-step chat and generative UI (`starter-app/app/(5-chatbot)/chat/weather.tsx`)
 
 Lessons 10 to 15 live in the Next.js starter (`starter-app/`), which is the course's starter project. Lesson 03 is ticked after its environment check passes. The other lessons are ticked after a real model run succeeds, which needs billing on the LookIn team.
