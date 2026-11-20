@@ -25,7 +25,13 @@ export default async function OrderStatusPage({
       </p>
       <h1 className="mt-2 text-3xl font-bold">{STATUS_LABEL[status]}</h1>
       <p className="mt-2 text-stone-600">
-        Thanks {order.customerName}. Your {order.size} {order.pizza} ({order.crust} crust) is on its way to {order.address}.
+        {status === "failed"
+          ? `Sorry ${order.customerName}, we couldn't complete your ${order.size} ${order.pizza} order. The workflow dashboard shows which step failed.`
+          : status === "escalated"
+            ? `Sorry ${order.customerName}, the kitchen didn't confirm your ${order.size} ${order.pizza} in time. We've escalated it to the manager.`
+            : status === "delivered" || status === "review-sent"
+              ? `Enjoy, ${order.customerName}! Your ${order.size} ${order.pizza} (${order.crust} crust) was delivered to ${order.address}.`
+              : `Thanks ${order.customerName}. Your ${order.size} ${order.pizza} (${order.crust} crust) is on its way to ${order.address}.`}
       </p>
 
       <div className="mt-8 rounded-lg border border-stone-300 bg-white p-6">

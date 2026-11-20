@@ -11,6 +11,9 @@
 /* Import animation utilities */
 @import "tw-animate-css";
 
+/* Let Tailwind see the classes Streamdown (MessageResponse) uses for markdown: lists, tables, code */
+@source "../node_modules/streamdown/dist/*.js";
+
 /* Theme configuration */
 @theme {
   /* Custom colors using CSS variables */
